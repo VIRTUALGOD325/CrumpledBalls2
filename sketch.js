@@ -3,47 +3,23 @@ const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
+const Render = Matter.Render;
 
-var engine;
-
+var dustbin,paper,ground,engine;
 var world;
 
-var ballIMG;
-
-var dustbin,dustbinIMG;
-
-function preload()
-{
-   ballIMG=loadImage("paper.png");
-   dustbinIMG=loadImage("dustbingreen.png");
-}
 
 function setup() {
-	createCanvas(800, 700);
-
-	ball=createSprite(width/2, 100, 10,10);
-	ball.addImage("paper", ballIMG);
-	//ball.scale=3;
+	createCanvas(1200, 400);
+	rectMode(CENTER);
+    
 
 	engine = Engine.create();
 	world = engine.world;
-
-
-
-	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color(255)
-
-	dustbin=createSprite(width/2, 500, 10,10);
-	dustbin.addImage("dustbin", dustbinIMG);
-
+	paper=new Paper(40,40,20);
+	dustbin=new Dustbin(1000,450);
+	ground=new Ground(600,400);
 	
-
-	World.add(world, ball);
-
-	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
- 	World.add(world, ground);
-
-
 	Engine.run(engine);
 
   
@@ -52,14 +28,23 @@ function setup() {
 
 function draw() {
   rectMode(CENTER);
-  background("white");
-
-  if(mousePressedOver(ball)){
-	  ball.velocityY = 3;
-  }
-
-  drawSprites();
+  background(100);
  
+  
+  paper.display();
+  dustbin.display();
+  ground.display();
+  
+  
+ 
+  
+  
+ 
+}
+function keyPressed(){
+	if(keyCode===UP_ARROW){
+		Matter.Body.applyForce(paper.body,paper.body.position,{x:85,y:-85});
+	}
 }
 
 
